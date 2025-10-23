@@ -1,3 +1,10 @@
 ﻿<Solution>
-  <Project Path="Core.csproj" />
+  <Project Path="Project.Core.csproj" />
+  <Project Path="CFXREditor.csproj" />
+  <Project Path="CFXRRuntime.csproj" />
+  <Project Path="Project.Player.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="ToonyColorsPro.Demo.Editor.csproj" />
+  <Project Path="CFXRDemo.csproj" />
+  <Project Path="KinoBloom.Runtime.csproj" />
 </Solution>
