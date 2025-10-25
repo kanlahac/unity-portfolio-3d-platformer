@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed546d913d13c2e4f87495159db964f3, type: 3}
+  m_Name: Archer_MoveValue
+  m_EditorClassIdentifier: Project.Core::Project.Core.FloatVariable
+  <baseValue>k__BackingField: 8
+  runtimeValue: 0

@@ -2,45 +2,47 @@ namespace Project.Player
 {
     using Project.Core;
     using UnityEngine;
-    using UnityEngine.Events;
     using UnityEngine.InputSystem;
 
-    sealed class JumpAction : MonoBehaviour
+    [CreateAssetMenu(fileName = "JumpAction", menuName = "Scriptable Objects/Action/Jump")]
+    public class JumpAction : ActionBase
     {
         [Header("References")]
         [SerializeField] private InputActionReference _input;
-        [SerializeField] private CharacterController _characterController;
-        [SerializeField] private ForceController _forceController;
+
+        [Header("Events")]
+        [SerializeField] private StandardEvent _onJump;
+        [SerializeField] private Vector3Event _onExternalForce;
+
+        [Header("Status")]
+        [SerializeField] private BooleanVariable _isGroundedStatus;
 
         [Header("Values")]
         [SerializeField] private FloatVariable _jumpValue;
 
-        [Header("Unity Events"), Space]
-        public UnityEvent OnJump;
 
-
-        private void OnEnable()
+        public override void EnableAction()
         {
             _input.action.Enable();
-            _input.action.performed += HandleJump;
+
+            _input.action.performed += HandleInput;
         }
 
 
-        private void OnDisable()
+        public override void DisableAction()
         {
-            _input.action.performed -= HandleJump;
+            _input.action.performed -= HandleInput;
+
             _input.action.Disable();
         }
 
 
-        private void HandleJump(InputAction.CallbackContext context)
+        private void HandleInput(InputAction.CallbackContext context)
         {
-            if (_characterController.enabled == false) return;
-            if (_characterController.isGrounded == false) return;
+            if (_isGroundedStatus.runtimeValue == false) return;
 
-            _forceController.AddExternalForce(Vector3.up * _jumpValue.runtimeValue);
-
-            OnJump?.Invoke();
+            _onExternalForce.Raise(Vector3.up * _jumpValue.runtimeValue);
+            _onJump.Raise();
         }
     }
 }

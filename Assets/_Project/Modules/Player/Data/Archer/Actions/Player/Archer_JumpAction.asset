@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 957a8cdeb20de054a9d2bacee319bd3a, type: 3}
+  m_Name: Archer_JumpAction
+  m_EditorClassIdentifier: Project.Player::Project.Player.JumpAction
+  _input: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _onJump: {fileID: 11400000, guid: 94f738e2d0b68554487d39d343d2b8f9, type: 2}
+  _onExternalForce: {fileID: 11400000, guid: 7f283ce9ec142a149a707170c7115c01, type: 2}
+  _isGroundedStatus: {fileID: 11400000, guid: 10cb9aadfca357a40a362fd2bda4c319, type: 2}
+  _jumpValue: {fileID: 11400000, guid: e53848530359e604f8b3a0e700a88119, type: 2}

@@ -1,10 +1,13 @@
 ﻿<Solution>
+  <Project Path="Boxophobic.Utils.Scripts.csproj" />
   <Project Path="Project.Core.csproj" />
   <Project Path="CFXREditor.csproj" />
+  <Project Path="Boxophobic.Utils.Editor.csproj" />
   <Project Path="CFXRRuntime.csproj" />
-  <Project Path="Project.Player.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="ToonyColorsPro.Demo.Editor.csproj" />
+  <Project Path="Project.Player.csproj" />
   <Project Path="CFXRDemo.csproj" />
   <Project Path="KinoBloom.Runtime.csproj" />
+  <Project Path="Boxophobic.SkyboxCubemapExtended.Editor.csproj" />
 </Solution>
