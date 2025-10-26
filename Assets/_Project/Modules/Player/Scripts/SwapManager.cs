@@ -2,10 +2,12 @@ namespace Project.Player
 {
     using Project.Core;
     using UnityEngine;
+    using UnityEngine.InputSystem;
 
     sealed class SwapManager : MonoBehaviour
     {
         [Header("References")]
+        [SerializeField] private InputActionReference _swapInput;
         [SerializeField] private SwapController _magePlayerController;
         [SerializeField] private SwapController _archerPlayerController;
 
@@ -15,8 +17,20 @@ namespace Project.Player
         private SwapController _activePlayer;
 
 
-        private void OnEnable() => _onSwap.AddListener(HandleSwap);
-        private void OnDisable() => _onSwap.RemoveListener(HandleSwap);
+        private void OnEnable()
+        {
+            _swapInput.action.Enable();
+
+            _swapInput.action.performed += HandleInput;
+        }
+
+
+        private void OnDisable()
+        {
+            _swapInput.action.performed -= HandleInput;
+
+            _swapInput.action.Disable();
+        }
 
 
         private void Start()
@@ -29,10 +43,11 @@ namespace Project.Player
         }
 
 
-        private void HandleSwap()
+        private void HandleInput(InputAction.CallbackContext context)
         {
             if (_activePlayer == null) return;
-
+            if (_activePlayer.isGrounded == false) return;
+           
             _activePlayer.SwapControl(false);
 
             if (_activePlayer == _magePlayerController)
@@ -45,6 +60,7 @@ namespace Project.Player
             }
 
             _activePlayer.SwapControl(true);
+            _onSwap.Raise();
         }
     }
 }
