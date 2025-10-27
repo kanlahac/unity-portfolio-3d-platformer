@@ -10,15 +10,14 @@ namespace Project.Player
         [Header("References")]
         [SerializeField] private NavMeshAgent _navMeshAgent;
         [SerializeField] private Transform _otherCharacter;
+        [SerializeField] private AiActionBase[] _aiActions;
 
         [Header("Status")]
         [SerializeField] private BooleanVariable _isGroundedStatus;
         [SerializeField] private Vector3Variable _velocityStatus;
-
-        [Header("Values")]
         [SerializeField] private FloatVariable _moveValue;
 
-        private List<AiActionBase> _aiActions = new();
+        private List<AiActionBase> _actions = new();
 
         public NavMeshAgent navMeshAgent => _navMeshAgent;
         public Transform otherCharacter => _otherCharacter;
@@ -31,7 +30,7 @@ namespace Project.Player
 
         private void OnEnable()
         {
-            foreach (AiActionBase action in _aiActions)
+            foreach (AiActionBase action in _actions)
             {
                 action.EnableAction();
             }
@@ -40,7 +39,7 @@ namespace Project.Player
 
         private void OnDisable()
         {
-            foreach (AiActionBase action in _aiActions)
+            foreach (AiActionBase action in _actions)
             {
                 action.DisableAction();
             }
@@ -49,7 +48,7 @@ namespace Project.Player
 
         private void Update()
         {
-            foreach (AiActionBase action in _aiActions)
+            foreach (AiActionBase action in _actions)
             {
                 action.UpdateAction(Time.deltaTime);
             }
@@ -60,13 +59,23 @@ namespace Project.Player
 
         private void ActionFactory()
         {
-            AiActionBase followAction = new AiFollowAction();
-            followAction.AwakeAction(this);
-            _aiActions.Add(followAction);
+            foreach (AiActionBase action in _aiActions)
+            {
+                AiActionBase instance = Instantiate(action);
+                instance.AwakeAction(this);
+                _actions.Add(instance);
+            }
+        }
 
-            AiActionBase jumpAction = new AiJumpAction();
-            jumpAction.AwakeAction(this);
-            _aiActions.Add(jumpAction);
+
+        private void OnDestroy()
+        {
+            foreach (AiActionBase action in _actions)
+            {
+                Destroy(action);
+            }
+
+            _actions.Clear();
         }
     }
 }

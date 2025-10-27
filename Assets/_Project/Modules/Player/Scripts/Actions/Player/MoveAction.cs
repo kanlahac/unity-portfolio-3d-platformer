@@ -4,7 +4,7 @@ namespace Project.Player
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    [CreateAssetMenu(fileName = "MoveAction", menuName = "Scriptable Objects/Action/Move")]
+    [CreateAssetMenu(fileName = "MoveAction", menuName = "Scriptable Objects/Action/Player/Move")]
     public class MoveAction : ActionBase
     {
         [Header("References")]

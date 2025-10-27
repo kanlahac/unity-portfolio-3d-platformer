@@ -428,6 +428,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Player::Project.Player.AiController
   _navMeshAgent: {fileID: 250706660}
   _otherCharacter: {fileID: 311449764}
+  _aiActions:
+  - {fileID: 11400000, guid: a184754766feba644ba4a3a03b46a80b, type: 2}
+  - {fileID: 11400000, guid: 7d7a74888f686634ea78aab92289ca64, type: 2}
   _isGroundedStatus: {fileID: 11400000, guid: 10cb9aadfca357a40a362fd2bda4c319, type: 2}
   _velocityStatus: {fileID: 11400000, guid: 9aa21e5be339d3143a73be043c416b25, type: 2}
   _moveValue: {fileID: 11400000, guid: c2161670e574d39479d4d22f2f9762cd, type: 2}
@@ -601,6 +604,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Player::AiController
   _navMeshAgent: {fileID: 311449771}
   _otherCharacter: {fileID: 250706664}
+  _aiActions:
+  - {fileID: 11400000, guid: 0e54d94f141a0fc45ac9cdf3394f2702, type: 2}
+  - {fileID: 11400000, guid: feb0499ea18c30643bf65536339cbdda, type: 2}
   _isGroundedStatus: {fileID: 11400000, guid: 600d1129bbddacc4f90dbd58f89053c8, type: 2}
   _velocityStatus: {fileID: 11400000, guid: 22180de417d4359469bf4740bacaf7b2, type: 2}
   _moveValue: {fileID: 11400000, guid: 237ff506ade50354d85f55fe5b11223e, type: 2}

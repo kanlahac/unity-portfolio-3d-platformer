@@ -5,12 +5,12 @@ namespace Project.Player
     using UnityEngine;
     using UnityEngine.AI;
 
+     [CreateAssetMenu(fileName = "MoveAction", menuName = "Scriptable Objects/Action/Ai/Jump")]
     public class AiJumpAction : AiActionBase
     {
         private NavMeshAgent _navMeshAgent => _aiController.navMeshAgent;
-        private BooleanVariable _isGroundedStatus => _aiController.isGroundedStatus;
-        private FloatVariable _moveValue => _aiController.moveValue;
         private Transform transform => _aiController.transform;
+        private BooleanVariable _isGroundedStatus => _aiController.isGroundedStatus;
 
 
         public override void UpdateAction(float deltaTime)

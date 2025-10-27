@@ -4,13 +4,14 @@ namespace Project.Player
     using UnityEngine;
     using UnityEngine.AI;
 
+    [CreateAssetMenu(fileName = "MoveAction", menuName = "Scriptable Objects/Action/Ai/Follow")]
     public class AiFollowAction : AiActionBase
     {
         private NavMeshAgent _navMeshAgent => _aiController.navMeshAgent;
         private Transform _otherCharacter => _aiController.otherCharacter;
+        private Transform transform => _aiController.transform;
         private BooleanVariable _isGroundedStatus => _aiController.isGroundedStatus;
         private FloatVariable _moveValue => _aiController.moveValue;
-        private Transform transform => _aiController.transform;
 
 
         public override void EnableAction()
@@ -27,13 +28,8 @@ namespace Project.Player
         {
             float distance = Vector3.Distance(transform.position, _otherCharacter.position);
 
-            if (distance < _navMeshAgent.stoppingDistance)
+            if (distance > _navMeshAgent.stoppingDistance)
             {
-                _navMeshAgent.isStopped = true;
-            }
-            else
-            {
-                _navMeshAgent.isStopped = false;
                 _navMeshAgent.destination = _otherCharacter.position;
             }
         }

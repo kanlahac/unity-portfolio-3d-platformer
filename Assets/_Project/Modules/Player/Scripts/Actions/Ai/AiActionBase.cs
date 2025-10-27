@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace Project.Player
 {
-    public abstract class AiActionBase
+    public abstract class AiActionBase : ScriptableObject
     {
         protected AiController _aiController;
 

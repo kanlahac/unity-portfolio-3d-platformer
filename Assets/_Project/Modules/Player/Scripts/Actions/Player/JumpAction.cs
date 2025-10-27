@@ -4,7 +4,7 @@ namespace Project.Player
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    [CreateAssetMenu(fileName = "JumpAction", menuName = "Scriptable Objects/Action/Jump")]
+    [CreateAssetMenu(fileName = "JumpAction", menuName = "Scriptable Objects/Action/Player/Jump")]
     public class JumpAction : ActionBase
     {
         [Header("References")]
