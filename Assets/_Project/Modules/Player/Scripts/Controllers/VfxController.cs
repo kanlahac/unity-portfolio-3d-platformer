@@ -6,27 +6,28 @@ namespace Project.Player
     sealed class VfxController : Controller, IEnable, IDisable
     {
         [InjectField] private ParticleSystem _jumpSmoke;
-        [InjectField] private BooleanEvent _inputJumpEvent;
+        [InjectField] private InputReader _inputReader;
+        [InjectField] private BooleanVariable _isGroundedStatus;
 
 
         public void OnEnable()
         {
-            _inputJumpEvent.AddListener(HandleJump);
+            _inputReader.jumpEvent += HandleJump;
         }
 
 
         public void OnDisable()
         {
-            _inputJumpEvent.RemoveListener(HandleJump);
+            _inputReader.jumpEvent -= HandleJump;
         }
 
 
-        private void HandleJump(bool isPerformed)
+        private void HandleJump(float jumpValue)
         {
-            if (isPerformed == true)
-            {
-                _jumpSmoke.Play();
-            }
+            if (_isGroundedStatus.runtimeValue == false)
+                return;
+
+            _jumpSmoke.Play();
         }
     }
 }

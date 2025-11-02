@@ -6,21 +6,24 @@ namespace Project.Player
     [StateOf(typeof(PlayerStateController))]
     sealed class AirborneState : ParentState
     {
-        [InjectField] private BooleanVariable _isGroundedStatus;
+        [InjectField] private InputReader _inputReader;
 
 
         public override void EnterState()
         {
-            SetChildState(typeof(FallState));
+            ActivateChildState(typeof(FallState));
         }
 
 
-         public override Type CheckTransitions()
+        public override void ExitState()
         {
-            if (_isGroundedStatus.runtimeValue == true)
-                return typeof(GroundedState);
+            
+        }
 
-            return null;
+
+        protected override void CheckTransitions()
+        {
+
         }
     }
 }

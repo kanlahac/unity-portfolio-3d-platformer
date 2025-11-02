@@ -7,15 +7,8 @@ namespace Project.Player
     [ChildStateOf(typeof(GroundedState))]
     sealed class IdleState : ChildState
     {
-        [InjectField] private BooleanVariable _inputCheckMove;
-
-
-        public override Type CheckTransitions()
-        {
-            if (_inputCheckMove.runtimeValue == true)
-                return typeof(MoveState);
-
-            return null;
-        }
+        public override void EnterState(){}
+        public override void ExitState(){}
+        public override void UpdateState(float deltaTime){}
     }
 }

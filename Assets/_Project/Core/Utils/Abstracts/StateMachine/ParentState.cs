@@ -5,35 +5,63 @@ namespace Project.Core
 
     public abstract class ParentState : State
     {
-        protected ChildState _currentChildState { get; private set; } = null;
         protected Dictionary<Type, ChildState> _childStates = new();
+        protected List<ChildState> _activeChildState = new();
 
 
         public override void UpdateState(float deltaTime)
         {
-            _currentChildState?.UpdateState(deltaTime);
+            for (int i = _activeChildState.Count - 1; i >= 0; i--)
+            {
+                _activeChildState[i].UpdateState(deltaTime);
+            }
 
-            Type stateType = _currentChildState?.CheckTransitions();
-
-            if (stateType != null)
-                SetChildState(stateType);
+            CheckTransitions();
         }
 
 
-        public void AddChildState(Type childType, ChildState childState) => _childStates.Add(childType, childState);
-
-
-        protected void SetChildState(Type stateType)
+        public void AddChildState(Type childType, ChildState childState)
         {
-            if (_childStates.TryGetValue(stateType, out ChildState newState))
+            _childStates.Add(childType, childState);
+        }
+
+
+        public override void ExitState()
+        {
+            _activeChildState.ForEach(
+                state => state.ExitState()
+            );
+
+            _activeChildState.Clear();
+        }
+
+
+        protected void ActivateChildState(Type stateType)
+        {
+            if (_childStates.TryGetValue(stateType, out ChildState state))
             {
-                if (_currentChildState != newState)
-                {
-                    _currentChildState?.ExitState();
-                    _currentChildState = newState;
-                    _currentChildState.EnterState();
-                }
+                if (_activeChildState.Contains(state)) 
+                    return;
+
+                state.EnterState();
+                _activeChildState.Add(state);
             }
         }
+
+
+        protected void DesactivateChildState(Type stateType)
+        {
+            if (_childStates.TryGetValue(stateType, out ChildState state))
+            {
+                if (!_activeChildState.Contains(state))
+                    return;
+                    
+                state.ExitState();
+                _activeChildState.Remove(state);
+            }
+        }
+
+
+        protected abstract void CheckTransitions();
     }
 }

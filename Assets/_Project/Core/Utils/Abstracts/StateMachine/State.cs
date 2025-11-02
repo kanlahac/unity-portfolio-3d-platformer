@@ -10,11 +10,8 @@ namespace Project.Core
         }
 
 
-        public virtual void EnableState() { return; }
-        public virtual void DisableState() { return; }
-        public virtual void UpdateState(float deltaTime) { return; }
-        public virtual void EnterState() { return; }
-        public virtual void ExitState() { return; }
-        public virtual Type CheckTransitions() { return null; }
+        public abstract void EnterState();
+        public abstract void ExitState();
+        public abstract void UpdateState(float deltaTime);
     }
 }

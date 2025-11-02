@@ -1,21 +1,28 @@
 namespace Project.Core
 {
+    using System;
     using UnityEngine;
     using UnityEngine.InputSystem;
 
     [CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Objects/InputReader")]
     public class InputReader : ScriptableObject, GameInput.IPlayerActions
     {
-        [Header("Player events")]
-        [SerializeField] private BooleanEvent _inputAbilityEvent;
-        [SerializeField] private BooleanEvent _inputAttackEvent;
-        [SerializeField] private BooleanEvent _inputDashEvent;
-        [SerializeField] private BooleanEvent _inputJumpEvent;
-        [SerializeField] private Vector2Event _inputLookEvent;
-        [SerializeField] private Vector2Event _inputMoveEvent;
-        [SerializeField] private BooleanEvent _inputPauseEvent;
-        [SerializeField] private BooleanVariable _inputCheckMove;
-        [SerializeField] private BooleanVariable _inputCheckLook;
+        public event Action abilityEvent;
+        public event Action attackEvent;
+        public event Action dashEvent;
+        public event Action<float> jumpEvent;
+        public event Action<Vector2> lookEvent;
+        public event Action<Vector2> moveEvent;
+        public event Action pauseEvent;
+
+        public bool isMoving { get; private set; }
+        public bool isLooking { get; private set; }
+        public bool isUsingAbility { get; private set; }
+        public bool isAttacking { get; private set; }
+        public bool isDashing { get; private set; }
+        public bool isJumping { get; set; }
+        public bool isUsePause { get; private set; }
+
 
         private GameInput gameInput;
 
@@ -53,75 +60,98 @@ namespace Project.Core
         public void OnAbility(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                _inputAbilityEvent.Raise(true);
-
-
+            {
+                isUsingAbility = true;
+                abilityEvent?.Invoke();
+            }
+                
             if (context.phase == InputActionPhase.Canceled)
-                _inputAbilityEvent.Raise(false);
+            {
+                isUsingAbility = false;
+            }
         }
 
 
         public void OnAttack(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                _inputAttackEvent.Raise(true);
-
+            {
+                isAttacking = true;
+                attackEvent?.Invoke();
+            }
+            
             if (context.phase == InputActionPhase.Canceled)
-                _inputAttackEvent.Raise(false);
+            {
+                isAttacking = false;
+            }
         }
 
 
         public void OnDash(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                _inputDashEvent.Raise(true);
-
+            {
+                isDashing = true;
+                dashEvent?.Invoke();
+            }
+                
             if (context.phase == InputActionPhase.Canceled)
-                _inputDashEvent.Raise(false);
+            {
+                isDashing = false;
+            }
         }
 
 
         public void OnJump(InputAction.CallbackContext context)
         {
+            if (context.phase == InputActionPhase.Started)
+            {
+                isJumping = true;
+            } 
+
             if (context.phase == InputActionPhase.Performed)
-                _inputJumpEvent.Raise(true);
-            
+            {
+                float normalizedValue = Mathf.Clamp((float)context.duration, 0.5f, 1f);
+
+                jumpEvent?.Invoke(normalizedValue);
+            }
+
             if (context.phase == InputActionPhase.Canceled)
-                _inputJumpEvent.Raise(false);
+            {
+                isJumping = false;
+            } 
         }
 
 
         public void OnLook(InputAction.CallbackContext context)
         {
-            _inputLookEvent.Raise(context.ReadValue<Vector2>());
+            Vector2 Value = context.ReadValue<Vector2>();
 
-            if (context.phase == InputActionPhase.Performed)
-                _inputCheckLook.runtimeValue = true;
-
-            if (context.phase == InputActionPhase.Canceled)
-                _inputCheckLook.runtimeValue = false;
+            isLooking = Value != Vector2.zero;
+            lookEvent?.Invoke(Value);
         }
         
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            _inputMoveEvent.Raise(context.ReadValue<Vector2>());
+            Vector2 Value = context.ReadValue<Vector2>();
 
-            if (context.phase == InputActionPhase.Performed)
-                _inputCheckMove.runtimeValue = true;
-
-            if (context.phase == InputActionPhase.Canceled)
-                _inputCheckMove.runtimeValue = false;
+            isMoving = Value != Vector2.zero;
+            moveEvent?.Invoke(Value);
         }
 
 
         public void OnPause(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                _inputPauseEvent.Raise(true);
-
+            {
+                pauseEvent?.Invoke();
+            }
+                
             if (context.phase == InputActionPhase.Canceled)
-                _inputPauseEvent.Raise(false);
+            {
+                isUsePause = false;
+            }
         }
     }
 }

@@ -7,9 +7,19 @@ namespace Project.Player
     [ChildStateOf(typeof(AirborneState))]
     sealed class FallState : ChildState
     {
-        public override Type CheckTransitions()
+        public override void EnterState()
         {
-            return null;
+            
+        }
+
+        public override void ExitState()
+        {
+            
+        }
+
+        public override void UpdateState(float deltaTime)
+        {
+            
         }
     }
 }

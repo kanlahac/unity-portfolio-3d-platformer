@@ -4,7 +4,7 @@ namespace Project.Core
     using System.Collections.Generic;
     using System.Reflection;
 
-    public abstract class StateMachine : Controller, IUpdate, IDisable, IEnable
+    public abstract class StateMachine : Controller, IUpdate, IDisable
     {
         private List<State> _allStates = new();
         private Dictionary<Type, ParentState> _parentStates = new();
@@ -13,6 +13,8 @@ namespace Project.Core
 
         public override void AwakeController(DependencyProvider dependencyContainer)
         {
+            base.AwakeController(dependencyContainer);
+
             Type stateMachineType = GetType();
             Assembly assembly = stateMachineType.Assembly;
             FactoryStateResponse response = FactoryService.StateFactory(assembly, stateMachineType, dependencyContainer);
@@ -24,37 +26,27 @@ namespace Project.Core
         }
 
 
-        protected virtual void Awake() { return; }
+        public abstract void Awake();
+        public abstract void CheckParentTransition();
 
 
-        public void OnEnable()
+        public virtual void OnDisable()
         {
             _allStates.ForEach(
-                state => state.EnableState()
+                state => state.ExitState()
             );
         }
 
 
-        public void OnDisable()
-        {
-            _allStates.ForEach(
-                state => state.DisableState()
-            );
-        }
-
-
-        public void Update(float deltaTime)
+        public virtual void Update(float deltaTime)
         {
             _currentState?.UpdateState(deltaTime);
 
-            Type stateType = _currentState?.CheckTransitions();
-
-            if (stateType != null)
-                SetParentState(stateType);
+            CheckParentTransition();
         }
 
 
-        protected void SetParentState(Type stateType)
+        protected virtual void SetParentState(Type stateType)
         {
             if (_parentStates.TryGetValue(stateType, out ParentState newState))
             {

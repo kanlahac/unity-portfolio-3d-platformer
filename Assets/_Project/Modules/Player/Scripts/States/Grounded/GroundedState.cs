@@ -7,21 +7,38 @@ namespace Project.Player
     [StateOf(typeof(PlayerStateController))]
     sealed class GroundedState : ParentState
     {
-        [InjectField] private BooleanVariable _isGroundedStatus;
+        [InjectField] private InputReader _inputReader;
 
 
         public override void EnterState()
         {
-            SetChildState(typeof(IdleState));
+            ActivateChildState(typeof(IdleState));
         }
 
 
-        public override Type CheckTransitions()
+        public override void ExitState()
         {
-            if (_isGroundedStatus.runtimeValue == false)
-                return typeof(AirborneState);
-
-            return null;
+            
         }
+
+
+        protected override void CheckTransitions()
+        {
+            if (_inputReader.isJumping == true)
+            {
+                ActivateChildState(typeof(JumpState));
+            }
+                
+            if (_inputReader.isMoving == true)
+            {
+                DesactivateChildState(typeof(IdleState));
+                ActivateChildState(typeof(MoveState));
+            }
+            else
+            {
+                DesactivateChildState(typeof(MoveState));
+                ActivateChildState(typeof(IdleState));
+            }
+        }  
     }
 }

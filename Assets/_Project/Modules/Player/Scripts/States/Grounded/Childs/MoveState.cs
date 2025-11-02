@@ -9,29 +9,28 @@ namespace Project.Player
     [ChildStateOf(typeof(GroundedState))]
     sealed class MoveState : ChildState
     {
-        [InjectField] private BooleanVariable _inputCheckMove;
         [InjectField] private FloatVariable _moveValue;
         [InjectField] private Vector3Variable _horizontalMoveStatus;
         [InjectField] private Transform _characterTransform;
-        [InjectField] private Vector2Event _inputMoveEvent;
+        [InjectField] private InputReader _inputReader;
         private Vector2 _inputValue;
 
 
-        public override void EnableState()
+        public override void EnterState()
         {
-           _inputMoveEvent.AddListener(HandleMove);
+           _inputReader.moveEvent += HandleMove;
         } 
 
 
-        public override void DisableState()
+        public override void ExitState()
         {
-            _inputMoveEvent.RemoveListener(HandleMove);
+            _inputReader.moveEvent -= HandleMove;
         } 
 
 
         private void HandleMove(Vector2 inputValue)
         {
-            _inputValue = inputValue; 
+            _inputValue = inputValue;
         }
 
 
@@ -52,15 +51,6 @@ namespace Project.Player
                     15f * deltaTime
                 );
             }
-        }
-
-
-        public override Type CheckTransitions()
-        {
-            if (_inputCheckMove.runtimeValue == false)
-                return typeof(IdleState);
-
-            return null;
         }
     }
 }
