@@ -18,7 +18,10 @@ namespace Project.Player
         }
 
 
-        public void LateUpdate(float deltaTime) => _particleRenderer.enabled = CheckStaus();
+        public void LateUpdate(float deltaTime)
+        {
+            _particleRenderer.enabled = CheckStaus();
+        }
 
 
         private bool CheckStaus()

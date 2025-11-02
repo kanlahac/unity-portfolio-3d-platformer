@@ -87,7 +87,7 @@ namespace Project.Core
                 type =>
                 {
                     Controller instance = Activator.CreateInstance(type) as Controller;
-
+                    
                     instance.AwakeController(dependencyProvider);
                     instances.Add(instance);
                 }

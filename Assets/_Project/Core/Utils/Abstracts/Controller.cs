@@ -1,6 +1,6 @@
 namespace Project.Core
 {
-    public abstract class Controller 
+    public abstract class Controller
     {
         public virtual void AwakeController(DependencyProvider dependencyContainer)
         {

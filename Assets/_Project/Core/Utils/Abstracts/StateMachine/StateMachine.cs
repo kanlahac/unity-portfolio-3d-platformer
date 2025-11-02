@@ -4,7 +4,7 @@ namespace Project.Core
     using System.Collections.Generic;
     using System.Reflection;
 
-    public abstract class StateMachine : Controller, IUpdate, IDisable
+    public abstract class StateMachine : Controller, IUpdate, IDisable, IEnable
     {
         private List<State> _allStates = new();
         private Dictionary<Type, ParentState> _parentStates = new();
@@ -27,10 +27,18 @@ namespace Project.Core
         protected virtual void Awake() { return; }
 
 
+        public void OnEnable()
+        {
+            _allStates.ForEach(
+                state => state.EnableState()
+            );
+        }
+
+
         public void OnDisable()
         {
             _allStates.ForEach(
-                state => state.ExitState()
+                state => state.DisableState()
             );
         }
 

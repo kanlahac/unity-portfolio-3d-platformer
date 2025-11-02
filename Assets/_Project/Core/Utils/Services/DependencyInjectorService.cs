@@ -26,7 +26,7 @@ namespace Project.Core
                     BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
                 );
 
-                if (dependencyProperty != null && dependencyProperty.PropertyType.IsAssignableFrom(dependencyProperty.PropertyType))
+                if (dependencyProperty != null && field.FieldType.IsAssignableFrom(dependencyProperty.PropertyType))
                 {
                     object dependencyValue = dependencyProperty.GetValue(provider);
 
@@ -34,5 +34,5 @@ namespace Project.Core
                 }
             }
         }
-    }   
+    }    
 }
