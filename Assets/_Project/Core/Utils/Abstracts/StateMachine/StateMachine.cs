@@ -3,6 +3,7 @@ namespace Project.Core
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using UnityEngine;
 
     public abstract class StateMachine : Controller, IUpdate, IDisable
     {
@@ -21,12 +22,9 @@ namespace Project.Core
 
             _allStates = response.allStates;
             _parentStates = response.parentStates;
-
-            Awake();
         }
 
 
-        public abstract void Awake();
         public abstract void CheckParentTransition();
 
 

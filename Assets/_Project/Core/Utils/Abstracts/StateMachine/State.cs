@@ -12,6 +12,6 @@ namespace Project.Core
 
         public abstract void EnterState();
         public abstract void ExitState();
-        public abstract void UpdateState(float deltaTime);
+        public virtual void UpdateState(float deltaTime) { }
     }
 }

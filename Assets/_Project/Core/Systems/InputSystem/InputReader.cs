@@ -7,21 +7,15 @@ namespace Project.Core
     [CreateAssetMenu(fileName = "InputReader", menuName = "Scriptable Objects/InputReader")]
     public class InputReader : ScriptableObject, GameInput.IPlayerActions
     {
-        public event Action abilityEvent;
-        public event Action attackEvent;
-        public event Action dashEvent;
-        public event Action<float> jumpEvent;
-        public event Action<Vector2> lookEvent;
-        public event Action<Vector2> moveEvent;
-        public event Action pauseEvent;
-
-        public bool isMoving { get; private set; }
-        public bool isLooking { get; private set; }
-        public bool isUsingAbility { get; private set; }
-        public bool isAttacking { get; private set; }
-        public bool isDashing { get; private set; }
-        public bool isJumping { get; set; }
-        public bool isUsePause { get; private set; }
+        [field: SerializeField] public Vector2 MoveValue { get; private set; }
+        [field: SerializeField] public Vector2 LookValue { get; private set; }
+        [field: SerializeField] public bool IsMoving { get; private set; }
+        [field: SerializeField] public bool IsLooking { get; private set; }
+        [field: SerializeField] public bool IsUsingAbility { get; private set; }
+        [field: SerializeField] public bool IsAttacking { get; private set; }
+        [field: SerializeField] public bool IsDashing { get; private set; }
+        [field: SerializeField] public bool IsJumping { get; private set; }
+        [field: SerializeField] public bool IsPaused { get; private set; }
 
 
         private GameInput gameInput;
@@ -61,13 +55,12 @@ namespace Project.Core
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                isUsingAbility = true;
-                abilityEvent?.Invoke();
+                IsUsingAbility = true;
             }
                 
             if (context.phase == InputActionPhase.Canceled)
             {
-                isUsingAbility = false;
+                IsUsingAbility = false;
             }
         }
 
@@ -76,13 +69,12 @@ namespace Project.Core
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                isAttacking = true;
-                attackEvent?.Invoke();
+                IsAttacking = true;
             }
             
             if (context.phase == InputActionPhase.Canceled)
             {
-                isAttacking = false;
+                IsAttacking = false;
             }
         }
 
@@ -91,34 +83,26 @@ namespace Project.Core
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                isDashing = true;
-                dashEvent?.Invoke();
+                IsDashing = true;
             }
                 
             if (context.phase == InputActionPhase.Canceled)
             {
-                isDashing = false;
+                IsDashing = false;
             }
         }
 
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            if (context.phase == InputActionPhase.Started)
-            {
-                isJumping = true;
-            } 
-
             if (context.phase == InputActionPhase.Performed)
             {
-                float normalizedValue = Mathf.Clamp((float)context.duration, 0.5f, 1f);
-
-                jumpEvent?.Invoke(normalizedValue);
+                IsJumping = true;
             }
 
             if (context.phase == InputActionPhase.Canceled)
             {
-                isJumping = false;
+                IsJumping = false;
             } 
         }
 
@@ -126,18 +110,16 @@ namespace Project.Core
         public void OnLook(InputAction.CallbackContext context)
         {
             Vector2 Value = context.ReadValue<Vector2>();
-
-            isLooking = Value != Vector2.zero;
-            lookEvent?.Invoke(Value);
+            LookValue = Value;
+            IsLooking = Value.sqrMagnitude > 0.01f;
         }
         
 
         public void OnMove(InputAction.CallbackContext context)
         {
             Vector2 Value = context.ReadValue<Vector2>();
-
-            isMoving = Value != Vector2.zero;
-            moveEvent?.Invoke(Value);
+            MoveValue = Value;
+            IsMoving = Value.sqrMagnitude > 0.01f;
         }
 
 
@@ -145,12 +127,12 @@ namespace Project.Core
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                pauseEvent?.Invoke();
+                IsPaused = true;
             }
                 
             if (context.phase == InputActionPhase.Canceled)
             {
-                isUsePause = false;
+                IsPaused = false;
             }
         }
     }

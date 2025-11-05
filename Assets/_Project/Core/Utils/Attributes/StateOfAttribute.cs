@@ -5,11 +5,11 @@ namespace Project.Core
     [AttributeUsage(AttributeTargets.Class)]
     public class StateOfAttribute : Attribute
     {
-        public Type stateMachineType { get; }
+        public Type StateMachineType { get; }
         
         public StateOfAttribute(Type stateMachineType)
         {
-            this.stateMachineType = stateMachineType;
+            StateMachineType = stateMachineType;
         }
     }
 }

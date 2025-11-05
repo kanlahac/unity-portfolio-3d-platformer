@@ -1,74 +1,128 @@
 namespace Project.Player
 {
+    using DG.Tweening;
     using Project.Core;
     using UnityEngine;
 
-    sealed class ForceController : Controller, IEnable, IDisable, IUpdate
+    sealed class ForceController : Controller, ILateUpdate
     {
+        [InjectField] private ModuleData _playerData;
+        [InjectField] private InputReader _inputReader;
         [InjectField] private CharacterController _characterController;
-        [InjectField] private Vector3Event _onAddExternalForce;
-        [InjectField] private BooleanVariable _isGroundedStatus;
-        [InjectField] private Vector3Variable _velocityStatus;
-        [InjectField] private Vector3Variable _horizontalMoveStatus;
-        [InjectField] private FloatVariable _gravityValue;
-        private Vector3 _gravityForce;
-        private Vector3 _externalForce;
+        [InjectField] private Transform _characterModel;
+        [InjectField] private GameObject _root;
+        private Tween _decelerateExternalForcesTween = null;
 
 
-        public void OnEnable()
+        public void LateUpdate(float deltaTime)
         {
-            _onAddExternalForce.AddListener(AddExternalForce);
-        }
+            if (_playerData.CanMove) ApplyMovement(deltaTime);
+            if (!_playerData.CanMove) DecelerateMovement(deltaTime);
+            if (_playerData.CanJump) ApplyJump();
+            if (_playerData.CanDash) ApplyDash(deltaTime);
+            if (_playerData.CanApplyGravity) ApplyGravity(deltaTime);
 
-
-        public void OnDisable()
-        {
-            _onAddExternalForce.RemoveListener(AddExternalForce);
-        }
-
-
-        public void Update(float deltaTime)
-        {
-            if (_characterController.enabled == false) return;
-
-            AddGravity(deltaTime);
-
-            Vector3 allForces = (
-                _horizontalMoveStatus.runtimeValue +
-                _gravityForce +
-                _externalForce
-            ) * deltaTime;
-
-            _characterController.Move(allForces);
-
-            _externalForce = Vector3.Lerp(
-                _externalForce,
-                Vector3.zero,
-                5f * deltaTime
+            _characterController.Move(
+                (
+                    (Vector3.up * _playerData.VerticalForce.y) +
+                    _playerData.HorizontalForce +
+                    _playerData.ExternalForce
+                )
+                * deltaTime
             );
 
-            _isGroundedStatus.runtimeValue = _characterController.isGrounded;
-            _velocityStatus.runtimeValue = _characterController.velocity;
+            if (_playerData.IsGrounded)
+            {
+                _playerData.VerticalForce.y = -2.5f;
+            }
+
+            DecelerateExternalForce(deltaTime);
+
+            _playerData.Velocity = _characterController.velocity;
+            _playerData.IsGrounded = _characterController.isGrounded;
+            _playerData.GlobalPosition = _characterController.transform.position;
         }
 
 
-        private void AddGravity(float deltaTime)
+        private void ApplyMovement(float deltaTime)
         {
-            if (_isGroundedStatus.runtimeValue == false)
+            Vector3 moveForce = new Vector3(_inputReader.MoveValue.x, 0f, _inputReader.MoveValue.y);
+            Vector3 flatMovement = new Vector3(moveForce.x, 0, moveForce.z);
+
+            _playerData.HorizontalForce = moveForce * _playerData.MoveValue;
+
+            if (flatMovement.sqrMagnitude >= 0.01f)
             {
-                _gravityForce.y += _gravityValue.runtimeValue * deltaTime;
-                _gravityForce.y = Mathf.Max(_gravityForce.y, -50f);
+                Quaternion targetRotation = Quaternion.LookRotation(flatMovement);
+
+                _characterModel.rotation = Quaternion.Slerp(
+                    _characterModel.rotation,
+                    targetRotation,
+                    15f * deltaTime
+                );
+
+                _playerData.LookingDirection = _characterModel.forward;
+            }
+        }
+
+
+        private void ApplyJump()
+        {
+            _playerData.ExternalForce += Vector3.up * _playerData.JumpValue;
+        }
+
+
+        private void ApplyDash(float deltaTime)
+        {
+            if (_playerData.DashCooldownValue <= 0f)
+            {
+                _playerData.ExternalForce += _playerData.LookingDirection * _playerData.DashValue;
+                _playerData.DashCooldownValue = _playerData.BaseDashCooldownValue;
             }
             else
             {
-                _gravityForce.y = -0.5f;
+                _playerData.DashCooldownValue -= deltaTime;
             }
         }
 
 
-        private void AddExternalForce(Vector3 forceVector)
+        private void ApplyGravity(float deltaTime)
         {
-            _externalForce += forceVector;
+            _playerData.VerticalForce.y += _playerData.GravityValue * deltaTime;
+
+            _playerData.VerticalForce.y = Mathf.Clamp(
+                _playerData.VerticalForce.y,
+                -25f,
+                25f
+            );
+        }
+
+
+        private void DecelerateMovement(float deltaTime)
+        {
+            if (_playerData.HorizontalForce.sqrMagnitude <= 0.01f) return;
+
+            _playerData.HorizontalForce = Vector3.zero;
+        }
+
+
+        private void DecelerateExternalForce(float deltaTime)
+        {
+            if (_playerData.ExternalForce.sqrMagnitude <= 0.01f) return;
+
+            _decelerateExternalForcesTween.Kill();
+
+            _decelerateExternalForcesTween = DOTween.To(
+                () => _playerData.ExternalForce,
+                result => _playerData.ExternalForce = result,
+                Vector3.zero,
+                0.75f
+            )
+            .SetTarget(_root)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+                _playerData.ExternalForce = Vector3.zero
+            );
         }
     }
 }

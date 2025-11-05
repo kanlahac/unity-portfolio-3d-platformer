@@ -18,7 +18,7 @@ namespace Project.Core
                         !item.IsAbstract &&
                         stateType.IsAssignableFrom(item) &&
                         item.IsDefined(typeof(StateOfAttribute), false) &&
-                        item.GetCustomAttribute<StateOfAttribute>()?.stateMachineType == stateMachineType
+                        item.GetCustomAttribute<StateOfAttribute>()?.StateMachineType == stateMachineType
                 ).ToList();
 
             Dictionary<Type, ParentState> parentStates = new();
@@ -56,7 +56,7 @@ namespace Project.Core
 
                 if (attribute != null)
                 {
-                    Type parentType = attribute.parentStateType;
+                    Type parentType = attribute.ParentStateType;
 
                     if (parentStates.TryGetValue(parentType, out ParentState parentInstance))
                     {
@@ -87,7 +87,7 @@ namespace Project.Core
                 type =>
                 {
                     Controller instance = Activator.CreateInstance(type) as Controller;
-                    
+
                     instance.AwakeController(dependencyProvider);
                     instances.Add(instance);
                 }

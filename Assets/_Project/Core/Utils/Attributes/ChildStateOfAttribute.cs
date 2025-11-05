@@ -5,7 +5,7 @@ namespace Project.Core
     [AttributeUsage(AttributeTargets.Class)]
     public class ChildStateOfAttribute : Attribute
     {
-        public Type parentStateType { get; }
+        public Type ParentStateType { get; }
         
 
         public ChildStateOfAttribute(Type parentStateType)
@@ -15,7 +15,7 @@ namespace Project.Core
                 throw new ArgumentException($"The type {parentStateType.Name} must be State.");
             }
 
-            this.parentStateType = parentStateType;
+            ParentStateType = parentStateType;
         }
     }
 }

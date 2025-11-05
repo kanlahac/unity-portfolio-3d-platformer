@@ -13,6 +13,8 @@ namespace Project.Core
 
         protected virtual void Awake()
         {
+            _dependencyProvider.AddManager(this.gameObject);
+
             Assembly assembly = GetType().Assembly;
             _controllers = FactoryService.ControllerFactory(assembly, _dependencyProvider);
 

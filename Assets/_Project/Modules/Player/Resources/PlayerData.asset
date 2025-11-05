@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f0d43daf3381449a8b7518a29bf653, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: Project.Player::Project.Player.PlayerData
+  <BaseMoveValue>k__BackingField: 7
+  <BaseJumpValue>k__BackingField: 30
+  <BaseDashValue>k__BackingField: 1
+  <BaseDashCooldownValue>k__BackingField: 2
+  <BaseGravityValue>k__BackingField: -14
+  MoveValue: 7
+  JumpValue: 30
+  DashValue: 1
+  DashCooldownValue: 0.85616195
+  GravityValue: -14
+  GlobalPosition: {x: 0.25063282, y: 1.0799999, z: -3.4292722}
+  Velocity: {x: 0, y: 0, z: 0}
+  LookingDirection: {x: -1.0000001, y: 0, z: 0.0000005364418}
+  IsGrounded: 1
+  HorizontalForce: {x: 0, y: 0, z: 0}
+  VerticalForce: {x: 0, y: -2.5, z: 0}
+  ExternalForce: {x: 0, y: 0, z: 0}
+  CanJump: 0
+  CanDash: 0
+  CanMove: 0
+  CanApplyGravity: 0

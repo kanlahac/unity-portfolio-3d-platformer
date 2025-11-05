@@ -49,7 +49,7 @@ namespace Project.Core
         }
 
 
-        protected void DesactivateChildState(Type stateType)
+        protected void DeactivateChildState(Type stateType)
         {
             if (_childStates.TryGetValue(stateType, out ChildState state))
             {
