@@ -17,7 +17,6 @@ namespace Project.Core
         [field: SerializeField] public bool IsJumping { get; private set; }
         [field: SerializeField] public bool IsPaused { get; private set; }
 
-
         private GameInput gameInput;
 
 

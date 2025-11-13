@@ -4,20 +4,20 @@ namespace Project.Player
 
     [ChildStateOf(typeof(AirState))]
     [StateOf(typeof(PlayerStateController))]
-    sealed class FallState : ChildState
+    sealed class AirMoveState : ChildState
     {
-        [InjectField] private PlayerData _playerData;
+        [InjectField] private PlayerData _playerData; 
 
 
         public override void EnterState()
         {
-            _playerData.CanApplyGravity = true;
+            _playerData.CanMove = true;
         }
 
 
         public override void ExitState()
         {
-            _playerData.CanApplyGravity = false;
+            _playerData.CanMove = false;
         }
     }
 }

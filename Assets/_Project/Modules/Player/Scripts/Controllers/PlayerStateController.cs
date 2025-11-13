@@ -4,7 +4,7 @@ namespace Project.Player
 
     sealed class PlayerStateController : StateMachine
     {
-        [InjectField] private ModuleData _playerData;
+        [InjectField] private PlayerData _playerData;
 
 
         public override void CheckParentTransition()

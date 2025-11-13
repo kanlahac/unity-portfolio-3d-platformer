@@ -6,7 +6,7 @@ namespace Project.Player
 
     sealed class ForceController : Controller, ILateUpdate
     {
-        [InjectField] private ModuleData _playerData;
+        [InjectField] private PlayerData _playerData;
         [InjectField] private InputReader _inputReader;
         [InjectField] private CharacterController _characterController;
         [InjectField] private Transform _characterModel;
@@ -34,6 +34,11 @@ namespace Project.Player
             if (_playerData.IsGrounded)
             {
                 _playerData.VerticalForce.y = -2.5f;
+            }
+
+            if (_playerData.DashCooldownValue >= 0f)
+            {
+                _playerData.DashCooldownValue -= deltaTime;
             }
 
             DecelerateExternalForce(deltaTime);
@@ -74,15 +79,8 @@ namespace Project.Player
 
         private void ApplyDash(float deltaTime)
         {
-            if (_playerData.DashCooldownValue <= 0f)
-            {
-                _playerData.ExternalForce += _playerData.LookingDirection * _playerData.DashValue;
-                _playerData.DashCooldownValue = _playerData.BaseDashCooldownValue;
-            }
-            else
-            {
-                _playerData.DashCooldownValue -= deltaTime;
-            }
+            _playerData.ExternalForce += _playerData.LookingDirection * _playerData.DashValue;
+            _playerData.DashCooldownValue = _playerData.BaseDashCooldownValue;
         }
 
 
@@ -116,7 +114,7 @@ namespace Project.Player
                 () => _playerData.ExternalForce,
                 result => _playerData.ExternalForce = result,
                 Vector3.zero,
-                0.75f
+                0.5f
             )
             .SetTarget(_root)
             .SetEase(Ease.OutCubic)

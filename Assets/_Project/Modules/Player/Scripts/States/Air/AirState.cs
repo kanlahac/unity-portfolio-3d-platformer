@@ -7,6 +7,7 @@ namespace Project.Player
     sealed class AirState : ParentState
     {
         [InjectField] private InputReader _inputReader;
+        [InjectField] private PlayerData _playerData;
 
 
         public override void EnterState()
@@ -17,7 +18,25 @@ namespace Project.Player
 
         protected override void CheckTransitions()
         {
-            
+            if (_inputReader.IsMoving)
+            {
+                ActivateChildState(typeof(AirMoveState));
+            }
+
+            if (!_inputReader.IsMoving)
+            {
+                DeactivateChildState(typeof(AirMoveState));
+            }
+
+            if (_inputReader.IsDashing && _playerData.DashCooldownValue <= 0f)
+            {
+                ActivateChildState(typeof(AirDashState));
+            }
+
+            if (!_inputReader.IsDashing)
+            {
+                DeactivateChildState(typeof(AirDashState));
+            }
         }
     }
 }

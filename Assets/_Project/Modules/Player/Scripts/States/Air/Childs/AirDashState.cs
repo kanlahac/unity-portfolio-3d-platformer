@@ -4,17 +4,23 @@ namespace Project.Player
     using Project.Core;
     using UnityEngine;
 
-    [ChildStateOf(typeof(GroundState))]
+    [ChildStateOf(typeof(AirState))]
     [StateOf(typeof(PlayerStateController))]
-    sealed class DashState : ChildState
+    sealed class AirDashState : ChildState
     {
         [InjectField] private PlayerData _playerData;
-        [InjectField] private MonoBehaviour _host;
+        [InjectField] private GameObject _root;
+        private PlayerManager _playerManager;
 
 
         public override void EnterState()
         {
-            _host.StartCoroutine(SetDash());
+            if (_playerManager == null)
+            {
+                _playerManager = _root.GetComponent<PlayerManager>();
+            }
+
+            _playerManager.StartCoroutine(SetDash());
         }
 
 

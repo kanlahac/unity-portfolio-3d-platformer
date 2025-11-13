@@ -16,7 +16,7 @@ namespace Project.Core
             _dependencyProvider.AddManager(this.gameObject);
 
             Assembly assembly = GetType().Assembly;
-            _controllers = FactoryService.ControllerFactory(assembly, _dependencyProvider);
+            _controllers = _dependencyProvider.Factory.CreateControllers(assembly, _dependencyProvider);
 
             foreach (var controller in _controllers)
             {

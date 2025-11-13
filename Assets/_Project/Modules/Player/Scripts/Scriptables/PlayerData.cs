@@ -5,7 +5,7 @@ namespace Project.Player
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/Module Data/Player")]
-    public class ModuleData : Core.ModuleData
+    public class PlayerData : Core.ModuleData
     {
         [field: SerializeField, Header("Base Values")] 
         public float BaseMoveValue { get; private set; }
@@ -13,6 +13,7 @@ namespace Project.Player
         [field: SerializeField] public float BaseDashValue { get; private set; }
         [field: SerializeField] public float BaseDashCooldownValue { get; private set; }
         [field: SerializeField] public float BaseGravityValue { get; private set; }
+        [field: SerializeField] public float BaseAbilityDurationValue { get; private set; }
 
         [Header("Runtime Values")]
         public float MoveValue;
@@ -20,6 +21,7 @@ namespace Project.Player
         public float DashValue;
         public float DashCooldownValue;
         public float GravityValue;
+        public float AbilityDurationValue;
 
         [Header("Info")]
          public Vector3 GlobalPosition;
@@ -37,6 +39,7 @@ namespace Project.Player
         public bool CanDash;
         public bool CanMove;
         public bool CanApplyGravity;
+        public bool CanUseAbility;
 
 
         protected override void OnEnable()
@@ -55,6 +58,7 @@ namespace Project.Player
             DashValue = BaseDashValue;
             DashCooldownValue = BaseDashCooldownValue;
             GravityValue = BaseGravityValue;
+            AbilityDurationValue = BaseAbilityDurationValue;
         }
 
 
@@ -71,6 +75,7 @@ namespace Project.Player
             CanDash = false;
             CanMove = false;
             CanApplyGravity = false;
+            CanUseAbility = false;
         }
     }
 }

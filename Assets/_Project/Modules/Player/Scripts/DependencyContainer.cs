@@ -9,12 +9,13 @@ namespace Project.Player
     sealed class DependencyContainer : DependencyProvider
     {
         [field: SerializeField, Header("Module")] public InputReader InputReader { get; private set; }
-        [field: SerializeField] public ModuleData PlayerData { get; private set; }
+        [field: SerializeField] public PlayerData PlayerData { get; private set; }
 
         [field: SerializeField, Header("Objects")] public CharacterController CharacterController { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform CharacterModel { get; private set; }
         [field: SerializeField] public Transform LightMagicTransform { get; private set; }
-        [field: SerializeField] public Transform LightMagicEffectTransform { get; private set; }
+        [field: SerializeField] public Transform StaffTransform { get; private set; }
+        [field: SerializeField] public Light LightMagic { get; private set; }
     }
 }

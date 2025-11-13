@@ -2,9 +2,9 @@ namespace Project.Core
 {
     public abstract class Controller
     {
-        public virtual void AwakeController(DependencyProvider dependencyContainer)
+        public virtual void AwakeController(DependencyProvider dependencyProvider)
         {
-            DependencyInjectorService.AutoInject(this, dependencyContainer);
+            dependencyProvider.Injector.AutoInject(this, dependencyProvider);
         }
     } 
 }

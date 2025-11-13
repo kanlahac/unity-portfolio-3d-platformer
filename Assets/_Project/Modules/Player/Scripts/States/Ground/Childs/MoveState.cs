@@ -6,7 +6,7 @@ namespace Project.Player
     [StateOf(typeof(PlayerStateController))]
     sealed class MoveState : ChildState
     {
-        [InjectField] private ModuleData _playerData;
+        [InjectField] private PlayerData _playerData;
 
 
         public override void EnterState()

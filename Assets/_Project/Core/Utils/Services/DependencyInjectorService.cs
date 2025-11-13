@@ -4,9 +4,9 @@ namespace Project.Core
     using System.Linq;
     using System.Reflection;
 
-    public static class DependencyInjectorService
+    public class DependencyInjectorService : IDependencyInjector
     {
-        public static void AutoInject(object target, DependencyProvider provider)
+        public void AutoInject(object target, DependencyProvider provider)
         {
             Type controllerType = target.GetType();
             Type providerType = provider.GetType();
@@ -34,5 +34,5 @@ namespace Project.Core
                 }
             }
         }
-    }    
+    } 
 }

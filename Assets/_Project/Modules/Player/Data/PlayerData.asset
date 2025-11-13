@@ -14,17 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Project.Player::Project.Player.PlayerData
   <BaseMoveValue>k__BackingField: 7
   <BaseJumpValue>k__BackingField: 30
-  <BaseDashValue>k__BackingField: 1
-  <BaseDashCooldownValue>k__BackingField: 2
+  <BaseDashValue>k__BackingField: 30
+  <BaseDashCooldownValue>k__BackingField: 1
   <BaseGravityValue>k__BackingField: -14
+  <BaseAbilityDurationValue>k__BackingField: 15
   MoveValue: 7
   JumpValue: 30
-  DashValue: 1
-  DashCooldownValue: 0.85616195
+  DashValue: 30
+  DashCooldownValue: -0.004425665
   GravityValue: -14
-  GlobalPosition: {x: 0.25063282, y: 1.0799999, z: -3.4292722}
+  AbilityDurationValue: 15
+  GlobalPosition: {x: 22.045118, y: 1.0799997, z: -4.1167316}
   Velocity: {x: 0, y: 0, z: 0}
-  LookingDirection: {x: -1.0000001, y: 0, z: 0.0000005364418}
+  LookingDirection: {x: 1.0000001, y: 0, z: -0.00008523464}
   IsGrounded: 1
   HorizontalForce: {x: 0, y: 0, z: 0}
   VerticalForce: {x: 0, y: -2.5, z: 0}
@@ -33,3 +35,4 @@ MonoBehaviour:
   CanDash: 0
   CanMove: 0
   CanApplyGravity: 0
+  CanUseAbility: 0

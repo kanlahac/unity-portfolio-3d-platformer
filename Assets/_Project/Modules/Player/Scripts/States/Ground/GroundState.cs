@@ -1,12 +1,13 @@
 namespace Project.Player
 {
     using Project.Core;
-    using UnityEngine;
+    using UnityEngine; 
 
     [StateOf(typeof(PlayerStateController))]
     sealed class GroundState : ParentState
     {
         [InjectField] private InputReader _inputReader;
+        [InjectField] private PlayerData _playerData;
 
 
         public override void EnterState()
@@ -30,11 +31,11 @@ namespace Project.Player
             }
 
             if (_inputReader.IsJumping)
-            {
+            { 
                 ActivateChildState(typeof(JumpState));
             }
 
-            if (_inputReader.IsDashing)
+            if (_inputReader.IsDashing && _playerData.DashCooldownValue <= 0f)
             {
                 ActivateChildState(typeof(DashState));
             }
@@ -42,6 +43,16 @@ namespace Project.Player
             if (!_inputReader.IsDashing)
             {
                 DeactivateChildState(typeof(DashState));
+            }
+
+            if (_inputReader.IsUsingAbility)
+            {
+                ActivateChildState(typeof(AbilityState));
+            }
+
+            if (!_inputReader.IsUsingAbility)
+            {
+                DeactivateChildState(typeof(AbilityState));
             }
         }
     }

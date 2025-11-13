@@ -6,7 +6,7 @@ namespace Project.Core
     {
         public virtual void AwakeState(DependencyProvider dependencyProvider)
         {
-            DependencyInjectorService.AutoInject(this, dependencyProvider);
+            dependencyProvider.Injector.AutoInject(this, dependencyProvider);
         }
 
 

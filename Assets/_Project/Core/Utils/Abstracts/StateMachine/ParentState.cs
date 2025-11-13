@@ -17,6 +17,7 @@ namespace Project.Core
             }
 
             CheckTransitions();
+            CheckExitFlag();
         }
 
 
@@ -63,5 +64,21 @@ namespace Project.Core
 
 
         protected abstract void CheckTransitions();
+
+
+        private void CheckExitFlag()
+        {
+            if (_activeChildState == null) return;
+
+            for (int i = _activeChildState.Count - 1; i >= 0; i--)
+            {
+                ChildState state = _activeChildState[i];
+
+                if (state.ExitFlag == false) continue;
+
+                state.ExitState();
+                _activeChildState.Remove(state);
+            }
+        }
     }
 }

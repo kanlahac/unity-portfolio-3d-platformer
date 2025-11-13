@@ -12,13 +12,13 @@ namespace Project.Core
         protected ParentState _currentState;
 
 
-        public override void AwakeController(DependencyProvider dependencyContainer)
+        public override void AwakeController(DependencyProvider dependencyProvider)
         {
-            base.AwakeController(dependencyContainer);
+            base.AwakeController(dependencyProvider);
 
             Type stateMachineType = GetType();
             Assembly assembly = stateMachineType.Assembly;
-            FactoryStateResponse response = FactoryService.StateFactory(assembly, stateMachineType, dependencyContainer);
+            FactoryStateResponse response = dependencyProvider.Factory.CreateStates(assembly, stateMachineType, dependencyProvider);
 
             _allStates = response.allStates;
             _parentStates = response.parentStates;

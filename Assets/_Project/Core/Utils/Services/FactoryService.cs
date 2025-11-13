@@ -5,9 +5,9 @@ namespace Project.Core
     using System.Linq;
     using System.Reflection;
 
-    public static class FactoryService
+    public class FactoryService : IFactory
     {
-        public static FactoryStateResponse StateFactory(Assembly assembly, Type stateMachineType, DependencyProvider dependencyProvider)
+        public FactoryStateResponse CreateStates(Assembly assembly, Type stateMachineType, DependencyProvider dependencyProvider)
         {
             Type stateType = typeof(State);
 
@@ -69,7 +69,7 @@ namespace Project.Core
         }
 
 
-        public static List<Controller> ControllerFactory(Assembly assembly, DependencyProvider dependencyProvider)
+        public List<Controller> CreateControllers(Assembly assembly, DependencyProvider dependencyProvider)
         {
             Type controllerType = typeof(Controller);
 

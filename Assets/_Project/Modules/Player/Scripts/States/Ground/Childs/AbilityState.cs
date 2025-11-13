@@ -6,7 +6,7 @@ namespace Project.Player
 
     [ChildStateOf(typeof(GroundState))]
     [StateOf(typeof(PlayerStateController))]
-    sealed class DashState : ChildState
+    sealed class AbilityState : ChildState
     {
         [InjectField] private PlayerData _playerData;
         [InjectField] private MonoBehaviour _host;
@@ -14,23 +14,23 @@ namespace Project.Player
 
         public override void EnterState()
         {
-            _host.StartCoroutine(SetDash());
+            _host.StartCoroutine(SetAbility());
         }
 
 
         public override void ExitState()
         {
-            _playerData.CanDash = false;
+            _playerData.CanUseAbility = false;
         }
 
 
-        private IEnumerator SetDash()
+        private IEnumerator SetAbility()
         {
-            _playerData.CanDash = true;
+            _playerData.CanUseAbility = true;
 
             yield return null;
 
-            _playerData.CanDash = false;
+            _playerData.CanUseAbility = false;
         }
     }
 }
